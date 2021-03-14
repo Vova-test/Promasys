@@ -1,0 +1,23 @@
+body{
+    background: url("http://a.top4top.net/p_397znzmu1.png") center center fixed;
+    background-size: cover;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    -msn-background-size: cover;
+}
+body .overlay{
+    background: rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+body .overlay .navbar-brand{
+    font-size: 25px;
+    font-weight: bold;
+}
+body .overlay .navbar-nav>li>a {
+    font-size:20px;
+}
