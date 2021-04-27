@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 // User Authentication Routes
 Route::get('/login', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('/login', 'Auth\LoginController@login1');
+Route::post('/login', 'Auth\LoginController@login');
 
 Route::group(['middleware' => ['auth']], function () {
 
