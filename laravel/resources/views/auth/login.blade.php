@@ -61,7 +61,7 @@
                             <div class="form-group">
                                 {!! NoCaptcha::display() !!}
                                 @if ($errors->has('g-recaptcha-response'))
-                                    <span class="help-block">
+                                    <span class="help-block text-danger">
                                     <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
                                 </span>
                                 @endif
