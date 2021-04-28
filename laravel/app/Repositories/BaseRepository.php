@@ -36,7 +36,7 @@ class BaseRepository implements RepositoryInterface
 
     public function create(array $attributes)
     {
-        $class = get_class($this->model); 
+        $class = get_class($this->model);
 
         $model = new $class();
 

@@ -13,7 +13,9 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\CreateEncryptionKey::class,
+        Commands\RunDeploy::class,
+        Commands\AssignUser::class,
     ];
 
     /**
