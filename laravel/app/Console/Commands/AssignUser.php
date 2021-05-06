@@ -3,11 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Services\UserService;
+use App\Services\EncryptService;
 use Illuminate\Console\Command;
-use Illuminate\Encryption\Encrypter;
 use Hash;
 use Validator;
-use Str;
 
 class AssignUser extends Command
 {
@@ -53,25 +52,13 @@ class AssignUser extends Command
     {
         $this->call('config:clear');
 
-        $cryptionKey = env("ENCRYPTION_KEY");
-        $appKey = env("APP_KEY");
-        if (Str::startsWith($cryptionKey, 'base64:')) {
-            $cryptionKey = substr($cryptionKey, 7);
-        }
-
-        $cryptionKey = base64_decode($cryptionKey);
-
-        $cipher = config('app.cipher');
-
-        $passwordEncrypter = new Encrypter($cryptionKey, $cipher);
-
         $details = $this->getDetails();
 
         $newUser = $this->user->create([
             'name' => $details['name'],
             'email' => $details['email'],
             'password' => Hash::make($details['password']),
-            'credential_key' => $passwordEncrypter->encrypt($details['password']),
+            'credential_key' => EncryptService::encryptPassword($details['password']),
         ]);
 
         $this->display($newUser);
@@ -93,7 +80,6 @@ class AssignUser extends Command
 
         while ($errors->all())
         {
-            //$this->error('Email must be unique and valid');
             foreach ($errors->all() as $message) {
                 $this->error($message);
             }
