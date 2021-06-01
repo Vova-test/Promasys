@@ -6,4 +6,42 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
-@import 'layout.css';
+/*@import 'layout.css';*/
+
+.modal {
+    display: block;
+}
+
+form.button-form {
+    display: contents;
+}
+
+.modal-store-enter-active, .modal-store-leave-active {
+    transition: all .5s;
+}
+
+.modal-store-enter, .modal-store-leave-to {
+    transform: translateY(-200px);
+    opacity: 0;
+}
+
+.fade-enter-active {
+    animation: .75s fade forwards;
+}
+
+.fade-leave-active {
+    animation: .75s fade reverse;
+}
+
+.fade-enter, .fade-leave-to {
+    opacity: 0;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: .5;
+    }
+}

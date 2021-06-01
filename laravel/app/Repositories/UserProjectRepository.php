@@ -2,11 +2,11 @@
 
 namespace App\Repositories;
 
-use App\Models\CredentialSet;
+use App\Models\UserProject;
 
-class CredentialSetRepository extends BaseRepository
+class UserProjectRepository extends BaseRepository
 {
-    public function __construct(CredentialSet $model)
+    public function __construct(UserProject $model)
     {
         $this->model = $model;
     }

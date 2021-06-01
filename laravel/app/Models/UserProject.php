@@ -12,6 +12,13 @@ class UserProject extends Model
     use UsesUuid;
 
     protected $fillable = [
-        'project_id', 'user_id', 'type'
+        'project_id',
+        'user_id',
+        'type'
     ];
+
+    public function project()
+    {
+        return $this->belongsTo(Project::class, 'project_id', 'id');
+    }
 }
