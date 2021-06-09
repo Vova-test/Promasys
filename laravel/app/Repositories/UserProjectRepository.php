@@ -14,7 +14,12 @@ class UserProjectRepository extends BaseRepository
     public function destroy($id)
     {
         return $this->model
-            ->where('project_id', $id)
-            ->delete();
+                    ->where('project_id', $id)
+                    ->delete();
+    }
+
+    public function getAccessArray() {
+        return $this->model
+                    ->getAccessArray();
     }
 }

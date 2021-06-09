@@ -19,9 +19,6 @@ Route::post('/login', 'Auth\LoginController@login');
 
 Route::group(['middleware' => ['auth']], function () {
 
-    /*Route::get('/', function () {
-        return redirect()->route('/projects');
-    });*/
     Route::redirect('/', '/projects');
     Route::get('/test','ProjectController@test');
 
@@ -29,12 +26,13 @@ Route::group(['middleware' => ['auth']], function () {
         Route::get('/','ProjectController@index')->name('projects');
         Route::post('/','ProjectController@getProjects');
 
-        Route::get('/open','ProjectController@open')->name('projects.open');
+        Route::get('/card/{id}','ProjectController@show')->name('project');
+        Route::get('/{id}/card','ProjectController@show')->name('card');
 
-        Route::post('/store','ProjectController@store')->name('projects.store');
-        Route::post('/update/{id}','ProjectController@update')->name('projects.update');
+        Route::post('/store','ProjectController@store')->name('project.store');
+        Route::post('/update/{id}','ProjectController@update')->name('project.update');
 
-        Route::delete('/delete/{id}','ProjectController@destroy')->name('projects.delete');
+        Route::delete('/delete/{id}','ProjectController@destroy')->name('project.delete');
     });
 
     Route::post('logout', 'Auth\LoginController@logout')->name('logout');

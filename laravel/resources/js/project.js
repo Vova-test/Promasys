@@ -1,137 +1,119 @@
 new Vue({
     el: "#project-app",
     data: {
+        url: '/projects',
         userProjects: [],
+        projectAccess: {},
         selectedProjectIndex: -1,
         response: {},
         errors: [],
         logs: [],
         search: '',
-        modalVisibility: false,
         project: {
             id: '',
             name: '',
             logo: '',
             description: '',
         },
+        image: null,
     },
     methods: {
         async ajax(url, method = 'post', body = {}) {
             const response = await fetch(url, {
                 method: method,
                 headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
+                    'accept': 'application/json',
                     'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content'),
                 },
-                body: JSON.stringify(body),
+                body: body,
             });
 
-            if (!response.ok) {
-                throw new Error(response.status);
+            this.errors.length = 0;
+            this.logs.length = 0;
+
+            if (response.ok || response.status == 422) {
+                const data = await response.json();
+
+                return data;
             }
 
-            const data = await response.json();
-
-            return data;
+            this.errors.push(`Error, status: ${response.status}`);
         },
-        getProjects() {
-            const result = this.ajax('/projects')
-                .then(result => {
-                    this.errors.length = 0;
-                    this.userProjects = result.userProjects;
+        async getProjects() {
+            const result = await this.ajax(this.url);
 
-                    if (this.userProjects.length >0) {
-                        this.selectProject(0);
-                    }
-                })
-                .catch(err => {
-                    this.errors.push(`getProjects error: ${err.message}`);
-                });
+            this.userProjects = result.userProjects;
+            this.projectAccess = result.accessArray;
 
-            return result;
+            if (this.userProjects.length > 0) {
+                this.selectProject(0);
+            }
+        },
+        async deleteProject(url, id) {
+            url = this.getRoute(url, id);
+
+            const result = await this.ajax(url, 'delete');
+
+            if (result.deleted) {
+                await this.getProjects();
+
+                this.logs.push(`Project id:"${id}" was deleted!`);
+
+            } else {
+                this.errors.push(`Project id:"${id}" was not defind!`);
+            }
+        },
+        async updateOrStore() {
+            const method = 'post';
+
+            const formData = new FormData();
+            formData.append('name', this.project.name);
+            formData.append('description', this.project.description);
+            formData.append('image', this.image);
+
+            const result = await this.ajax(this.project.url, method, formData);
+
+            if (result.errors) {
+                for (const [key, value] of Object.entries(result.errors)) {
+                    this.errors.push(`${key}: ${value}`);
+                }
+            } else {
+                await this.getProjects();
+                this.logs.push(`Project was updated!`);
+            }
+
+            this.image = '';
+            this.$refs.inputFile.value = null;
+
+            $('#modalProject').modal('hide');
         },
         selectProject(index) {
             this.selectedProjectIndex = index;
         },
-        deleteProject(id){
-            const result = this.ajax(`/projects/delete/${id}`, 'delete')
-                .then(result => {
-                    this.logs.length = 0;
-                    this.logs.push(`Project was deleted!`);
-                    console.log(this.logs, id, result.deleted );
-                    this.getProjects();
-                })
-                .catch(err => {
-                    this.logs.length = 0;
-                    this.errors.push(`deleteProject error: ${err.message}`);
-                });
+        editOrCreate(url, project = null) {
+            if (project) {
+                Object.assign(this.project, project);
 
-            return result;
-        },
-        editProject(project) {
-            Object.assign(this.project, project);
-
-            this.modalVisibility = true;
-        },
-        createNewProject() {
-            this.project = {
-                id: '',
-                name: '',
-                logo: '',
-                description: '',
-            };
-        },
-        saveProject(id) {
-            body = {
-                name: this.project.name,
-                description: this.project.description,
-            }
-
-            method = 'post';
-
-            if (id) {
-                url = `/projects/update/${id}`;
-
-                this.updateProject(url, method, body);
+                this.project.url = this.getRoute(url, project.id);
             } else {
-                url = `/projects/store`;
-
-                this.storeProject(url, method, body);
+                this.project = {
+                    id: '',
+                    name: '',
+                    logo: '',
+                    description: '',
+                    url: url
+                };
             }
+
+            this.image = '';
+
+            $('#modalProject').modal('show');
         },
-        updateProject(url, method, body) {
-            const result = this.ajax(url, method, body)
-                .then(result => {
-                    this.errors.length = 0;
-                    this.logs.length = 0;
-                    this.logs.push(`Project was updated!`);
-                    this.getProjects();
-                    this.modalVisibility = false;
-
-                })
-                .catch(err => {
-                    this.errors.push(`updateProject error: ${err.message}`);
-                });
-
-            return result;
+        getImage(e) {
+            this.image = e.target.files[0];
         },
-        storeProject(url, method, body) {
-            const result = this.ajax(url, method, body)
-                .then(result => {
-                    this.errors.length = 0;
-                    this.logs.length = 0;
-                    this.logs.push(`Project was created!`);
-                    this.getProjects();
-                    this.modalVisibility = false;
-                    console.log(result);
-                })
-                .catch(err => {
-                    this.errors.push(`storeProject error: ${err.message}`);
-                });
-
-            return result;
-
+        getRoute(url, id) {
+            return url.replace('id', id);
         },
     },
     mounted: function () {

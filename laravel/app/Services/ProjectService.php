@@ -6,14 +6,16 @@ use App\Repositories\ProjectRepository;
 use App\Repositories\UserProjectRepository;
 use App\Repositories\CredentialSetRepository;
 use Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectService extends BaseService
 {
-	public function __construct(
-	    ProjectRepository $project,
+    public function __construct(
+        ProjectRepository $project,
         UserProjectRepository $userProject,
         CredentialSetRepository $credentialSet
-    ) {
+    )
+    {
         $this->project = $project;
         $this->userProject = $userProject;
         $this->credentialSet = $credentialSet;
@@ -22,22 +24,29 @@ class ProjectService extends BaseService
     public function getProjects()
     {
         $userId = Auth::id();
+
         return $this->project->getProjects($userId);
     }
 
-    public function destroy($projectId)
+    public function destroy(string $id)
     {
-        $project = $this->project->delete($projectId);
+        $logoPath = $this->getLogoPath($id);
 
-        if ($project) {
-            $this->userProject->destroy($projectId);
-            $this->credentialSet->destroy($projectId);
+        if ($logoPath) {
+            $this->deleteImage($logoPath);
         }
 
-        return $project ;
+        $project = $this->project->delete($id);
+
+        if ($project) {
+            $this->userProject->destroy($id);
+            $this->credentialSet->destroy($id);
+        }
+
+        return $project;
     }
 
-    public function update($id, array $attributes)
+    public function update(string $id, array $attributes)
     {
         return $this->project->update($id, $attributes);
     }
@@ -52,12 +61,43 @@ class ProjectService extends BaseService
             $userProjectAttributes = [
                 'user_id' => $userId,
                 'project_id' => $project->id,
-                'type' => 1
             ];
 
             $this->userProject->create($userProjectAttributes);
         }
 
         return $project;
+    }
+
+    public function storeImage(object $image, string $logo = null)
+    {
+        $logoPath = $image->store('logo', 'public');
+
+        if ($logo) {
+            $this->deleteImage($logo);
+        }
+
+        return $logoPath;
+    }
+
+    public function deleteImage(string $logo)
+    {
+        Storage::disk('public')->delete($logo);
+    }
+
+    public function getLogoPath(string $id)
+    {
+        $project = $this->project
+            ->find($id);
+
+        if ($project) {
+            return $project->logo;
+        }
+    }
+
+    public function getAccessArray()
+    {
+        return $this->userProject
+            ->getAccessArray();
     }
 }

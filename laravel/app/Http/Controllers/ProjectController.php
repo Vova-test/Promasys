@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\ProjectService;
+use App\Http\Requests\ProjectRequest;
 
 class ProjectController extends Controller
 {
@@ -14,11 +15,9 @@ class ProjectController extends Controller
 
     public function test()
     {
-
-        $id = 'f5746ec8-5b2f-4d57-817f-71361ded478f';
-
-        dd($this->service->destroy($id ));
-        //return view('projects.index');
+        $oldLogoPath = $this->service->getLogoPath('11');
+        dd($oldLogoPath);
+        return view('projects.test');
     }
 
     public function index()
@@ -28,23 +27,51 @@ class ProjectController extends Controller
 
     public function getProjects()
     {
-        $userProjects = $this->service->getProjects();
+        $userProjects = $this->service
+                             ->getProjects();
 
-        return response()->json(['userProjects' => $userProjects]);
+        $accessArray = $this->service
+                            ->getAccessArray();
+
+        return response()->json([
+            'userProjects' => $userProjects,
+            'accessArray' => $accessArray
+        ]);
     }
 
-    public function update($id, Request $request)
+    public function update($id, ProjectRequest $request)
     {
-        $data = $request->except('_token');
+        $data = $request->except(['_token', 'image']);
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+
+            $oldLogoPath = $this->service
+                ->getLogoPath($id);
+
+            $logoPath = $this->service
+                ->storeImage($file, $oldLogoPath);
+
+            $data['logo'] = $logoPath;
+        }
 
         $updated = $this->service->update($id, $data);
 
         return response()->json(['updated' => $updated]);
     }
 
-    public function store(Request $request)
+    public function store(ProjectRequest $request)
     {
-        $data = $request->except('_token');
+        $data = $request->except('_token', 'image');
+
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+
+            $logoPath = $this->service
+                ->storeImage($file);
+
+            $data['logo'] = $logoPath;
+        }
 
         $stored = $this->service->store($data);
 
@@ -58,9 +85,9 @@ class ProjectController extends Controller
         return response()->json(['deleted' => $deleted]);
     }
 
-    public function open()
+    public function show($id)
     {
-
+        dd($id);
     }
 
     public function edit()

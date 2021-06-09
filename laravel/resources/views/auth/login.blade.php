@@ -14,7 +14,7 @@
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text"> <i class="fa fa-user"></i> </span>
+                                        <span class="input-group-text"> <i class="fa fa-at"></i> </span>
                                     </div>
                                     <input id="email" type="email" placeholder="Email" class="form-control
                                         @error('email')
