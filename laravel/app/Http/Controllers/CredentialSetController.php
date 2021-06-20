@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CredentialSetService;
+use App\Http\Requests\CredentialSetRequest;
 use Illuminate\Http\Request;
 
 class CredentialSetController extends Controller
@@ -11,28 +12,31 @@ class CredentialSetController extends Controller
     {
         $this->service = $service;
     }
-    public function index()
-    {
 
+    public function getCredentials(string $project)
+    {
+        $credentialSets = $this->service
+                            ->getCredentials($project);
+
+        return response()->json(['credentialSets' => $credentialSets]);
     }
 
-    public function show()
+    public function store(CredentialSetRequest $request)
     {
+        $data = [
+            'name' => $request->name,
+            'credentials' => $request->credentials,
+            'project_id' => $request->projectId
+        ];
+        $stored = $this->service->create($data);
 
+        return response()->json(['stored' => $stored]);
     }
 
-    public function update()
+    public function destroy($id)
     {
+        $deleted = $this->service->delete($id);
 
-    }
-
-    public function create()
-    {
-
-    }
-
-    public function delete()
-    {
-
+        return response()->json(['deleted' => $deleted]);
     }
 }

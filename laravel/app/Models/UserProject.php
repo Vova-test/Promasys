@@ -28,6 +28,11 @@ class UserProject extends Model
         return $this->belongsTo(Project::class, 'project_id', 'id');
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
     public function getAccessArray() {
         return self::PROJECT_ACCESS_NAME;
     }

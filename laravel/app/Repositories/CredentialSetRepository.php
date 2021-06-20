@@ -11,10 +11,23 @@ class CredentialSetRepository extends BaseRepository
         $this->model = $model;
     }
 
+    public function getCredentials(string $project)
+    {
+        $credentials = $this->model
+                    ->where('project_id', $project)
+                    ->get();
+
+        if ($credentials) {
+            $credentials = $credentials->toArray();
+        }
+
+        return $credentials;
+    }
+
     public function destroy($id)
     {
         return $this->model
-            ->where('project_id', $id)
-            ->delete();
+                    ->where('project_id', $id)
+                    ->delete();
     }
 }

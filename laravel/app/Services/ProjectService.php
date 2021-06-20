@@ -17,6 +17,7 @@ class ProjectService extends BaseService
     )
     {
         $this->project = $project;
+        $this->repository = $project;
         $this->userProject = $userProject;
         $this->credentialSet = $credentialSet;
     }
@@ -99,5 +100,12 @@ class ProjectService extends BaseService
     {
         return $this->userProject
             ->getAccessArray();
+    }
+
+    public function getProject(string $projectId)
+    {
+        $userId = Auth::id();
+
+        return $this->project->getProject($projectId, $userId);
     }
 }

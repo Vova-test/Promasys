@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\ProjectService;
+use App\Services\EncryptService; //**
+use App\Services\CredentialSetService; //**
 use App\Http\Requests\ProjectRequest;
+use Auth;
 
 class ProjectController extends Controller
 {
@@ -13,16 +15,20 @@ class ProjectController extends Controller
         $this->service = $service;
     }
 
-    public function test()
+   /* public function test(CredentialSetService $credentialSetService)
     {
-        $oldLogoPath = $this->service->getLogoPath('11');
-        dd($oldLogoPath);
-        return view('projects.test');
-    }
+        $projectId = '479d241a-4db5-49be-b338-e4f56f16eadc';
+        $credentialSetService->getPassword($projectId);
+        $userPass = Auth::user()->credential_key;
+        $encryptValue = EncryptService::encryptValue($userPass, 'AW4-4-AS');
+        $decryptValue = EncryptService::decryptValue($userPass, $encryptValue);
+        dd("encryptValue: $encryptValue --- decryptValue: $decryptValue ; ");
+
+    }*/
 
     public function index()
     {
-        return view('projects.index');
+        return view('index');
     }
 
     public function getProjects()
@@ -87,11 +93,11 @@ class ProjectController extends Controller
 
     public function show($id)
     {
-        dd($id);
-    }
+        $userProject = $this->service->getProject($id);
 
-    public function edit()
-    {
+        $project = $userProject['project'];
+        $project['type'] = $userProject['type'];
 
+        return view('card', ['project' => $project]);
     }
 }

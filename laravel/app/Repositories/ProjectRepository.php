@@ -16,9 +16,23 @@ class ProjectRepository extends BaseRepository
     {
         $projects = UserProject::select('user_id','project_id','type')->where('user_id', $userId)
                                                                       ->with('project:id,logo,name,description')
-                                                                      ->get()
-                                                                      ->toArray();
+                                                                      ->get();
+
+        if ($projects) {
+            $projects = $projects->toArray();
+        }
 
         return $projects;
+    }
+
+    public function getProject($projectId, $userId)
+    {
+        $project = UserProject::select('user_id','project_id','type')->where('user_id', $userId)
+                                                                     ->where('project_id', $projectId)
+                                                                     ->with('project:id,logo,name,description')
+                                                                     ->firstOrFail();
+        $project = $project->toArray();
+
+        return $project;
     }
 }
