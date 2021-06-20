@@ -16,18 +16,18 @@
                             <button
                                 type="button"
                                 class="btn btn-success"
-                                @click="editOrCreate(`{{route('project.store', ['id'])}}`)"
+                                @click="editOrCreate(`{{route('project.store')}}`)"
                             >
                                 <span
                                      data-placement="top"
                                      data-toggle="tooltip"
                                      title="Create a new project"
-                                 >
+                                >
                                     Create a new project
-                                 </span>
+                                </span>
                             </button>
                         </div>
-                        <div class="col-md4 ml-auto mb-1">
+                        <div class="col-md-4 ml-auto mb-1">
                             <div class="form-group">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
@@ -101,7 +101,7 @@
                                         type="button"
                                         class="btn btn-primary"
                                             :href="getRoute(
-                                                `{{route('project', ['id'])}}`, userProject.project.id)"
+                                                `{{route('project.card', ['id'])}}`, userProject.project.id)"
                                     >
                                          <span
                                              data-toggle="tooltip"
