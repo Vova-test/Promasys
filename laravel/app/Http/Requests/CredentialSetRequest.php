@@ -9,7 +9,7 @@ class CredentialSetRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:250',
+            'title' => 'required|max:250',
             'credentials' => 'required|max:4000',
         ];
     }

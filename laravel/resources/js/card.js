@@ -4,8 +4,9 @@ new Vue({
         credentialSets: [],
         credentialSet: {
             id: '',
-            name: '',
+            title: '',
             credentials: '',
+            project_id: '',
         },
         errors: [],
         logs: [],
@@ -44,7 +45,7 @@ new Vue({
 
             this.credentialSets = result.credentialSets;
         },
-        async deleteSet(url, id, name) {
+        async deleteSet(url, id, title) {
             url = this.getRoute(url, id);
 
             const result = await this.ajax(url, 'delete');
@@ -52,17 +53,16 @@ new Vue({
             if (result.deleted) {
                 await this.getCredentialSets();
 
-                this.logs.push(`Credentials name:"${name}" was deleted!`);
+                this.logs.push(`Credentials "${title}" was deleted!`);
 
             } else {
-                this.errors.push(`Credentials name:"${name}" was not defind!`);
+                this.errors.push(`Credentials "${title}" was not defind!`);
             }
         },
         async storeSet() {
             const method = 'post';
-
             const formData = new FormData();
-            formData.append('name', this.credentialSet.name);
+            formData.append('title', this.credentialSet.title);
             formData.append('credentials', this.credentialSet.credentials);
             formData.append('projectId', this.credentialSet.projectId);
 
@@ -80,22 +80,15 @@ new Vue({
             $('#modalCredentialSet').modal('hide');
         },
         createSet(url, projectId  , credentialSet = null) {
-            if (credentialSet) {
-                url = this.getRoute(url, credentialSet.id);
+            this.credentialSet = {
+                projectId: projectId,
+                url: url
+            };
 
-                this.credentialSet = {
-                    name: credentialSet.name,
-                    credentials: credentialSet.credentials,
-                    projectId: projectId,
-                    url: url,
-                };
-            } else {
-                this.credentialSet = {
-                    name: '',
-                    credentials: '',
-                    projectId: projectId,
-                    url: url
-                };
+            if (credentialSet) {
+                this.credentialSet.url = this.getRoute(url, credentialSet.id);
+                this.credentialSet.title = credentialSet.title;
+                this.credentialSet.credentials = credentialSet.credentials;
             }
 
             $('#modalCredentialSet').modal('show');

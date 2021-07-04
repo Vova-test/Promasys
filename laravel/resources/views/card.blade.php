@@ -50,7 +50,7 @@
                             v-for="(credentialSet, index) of credentialSets"
                             class="mb-3"
                         >
-                            <h6>@{{index + 1}}. @{{credentialSet.name}}</h6>
+                            <h6>@{{index + 1}}. @{{credentialSet.title}}</h6>
                             <div class="row mx-1">
                                 <div class="col col-md-8 my-auto border border-dark">
                                     <pre>@{{ credentialSet.credentials }}</pre>
@@ -113,12 +113,12 @@
                                     </div>
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <label for="exampleFormControlInput1">Credential Name</label>
+                                            <label for="exampleFormControlInput1">Credential Title</label>
                                             <input
                                                 type="email"
                                                 class="form-control"
-                                                placeholder="name"
-                                                v-model="credentialSet.name"
+                                                placeholder="title"
+                                                v-model="credentialSet.title"
                                             >
                                         </div>
                                         <div class="form-group">

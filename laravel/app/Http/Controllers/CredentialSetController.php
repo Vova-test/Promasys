@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Services\CredentialSetService;
 use App\Http\Requests\CredentialSetRequest;
-use Illuminate\Http\Request;
 
 class CredentialSetController extends Controller
 {
@@ -24,11 +23,11 @@ class CredentialSetController extends Controller
     public function store(CredentialSetRequest $request)
     {
         $data = [
-            'name' => $request->name,
+            'title' => $request->title,
             'credentials' => $request->credentials,
             'project_id' => $request->projectId
         ];
-        $stored = $this->service->create($data);
+        $stored = $this->service->store($data);
 
         return response()->json(['stored' => $stored]);
     }
