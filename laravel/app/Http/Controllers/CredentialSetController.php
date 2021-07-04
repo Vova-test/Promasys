@@ -32,6 +32,18 @@ class CredentialSetController extends Controller
         return response()->json(['stored' => $stored]);
     }
 
+    public function update($id, CredentialSetRequest $request)
+    {
+        $data = [
+            'title' => $request->title,
+            'credentials' => $request->credentials,
+            'project_id' => $request->projectId
+        ];
+        $updated = $this->service->update($id, $data);
+
+        return response()->json(['updated' => $updated]);
+    }
+
     public function destroy($id)
     {
         $deleted = $this->service->delete($id);

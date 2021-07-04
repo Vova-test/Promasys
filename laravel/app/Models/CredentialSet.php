@@ -35,12 +35,18 @@ class CredentialSet extends Model
 
     public function getCredentialsAttribute($value)
     {
-        $credentialKey = $this->user->credential_key;
-        return EncryptService::decryptValue($credentialKey, $value);
+        try {
+            $credentialKey = $this->user
+                                  ->credential_key;
+
+            return EncryptService::decryptValue($credentialKey, $value);
+        } catch (\Exception $e) {
+            return $value;
+        }
     }
 
     public function user()
     {
-        return $this->belongsTo(User::class/*, 'user_id', 'id'*/);
+        return $this->belongsTo(User::class);
     }
 }

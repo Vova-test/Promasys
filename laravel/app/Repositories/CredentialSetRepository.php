@@ -30,4 +30,11 @@ class CredentialSetRepository extends BaseRepository
                     ->where('project_id', $id)
                     ->delete();
     }
+
+    public function update($id, array $attributes)
+    {
+        return $this->model
+                    ->find($id)
+                    ->update($attributes);
+    }
 }

@@ -46,6 +46,8 @@ Route::group(['middleware' => ['auth']], function () {
 
         Route::post('/store','CredentialSetController@store')
             ->name('credential.store');
+        Route::post('/update/{id}','CredentialSetController@update')
+            ->name('credential.update');
 
         Route::delete('/delete/{id}','CredentialSetController@destroy')
             ->name('credential.delete');

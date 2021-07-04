@@ -59,8 +59,9 @@ new Vue({
                 this.errors.push(`Credentials "${title}" was not defind!`);
             }
         },
-        async storeSet() {
+        async updateOrStoreSet() {
             const method = 'post';
+
             const formData = new FormData();
             formData.append('title', this.credentialSet.title);
             formData.append('credentials', this.credentialSet.credentials);
@@ -79,7 +80,7 @@ new Vue({
 
             $('#modalCredentialSet').modal('hide');
         },
-        createSet(url, projectId  , credentialSet = null) {
+        editOrCreateSet(url, projectId  , credentialSet = null) {
             this.credentialSet = {
                 projectId: projectId,
                 url: url

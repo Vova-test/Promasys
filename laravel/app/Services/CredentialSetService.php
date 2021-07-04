@@ -16,7 +16,8 @@ class CredentialSetService extends BaseService
 
     public function getCredentials(string $projectId)
     {
-        $credentials = $this->repository->getCredentials($projectId);
+        $credentials = $this->repository
+                            ->getCredentials($projectId);
 
         return $credentials;
     }
@@ -25,6 +26,15 @@ class CredentialSetService extends BaseService
     {
         $attributes['user_id'] = Auth::user()->id;
 
-        return $this->repository->create($attributes);
+        return $this->repository
+                    ->create($attributes);
+    }
+
+    public function update(string $id, array $attributes)
+    {
+        $attributes['user_id'] = Auth::user()->id;
+
+        return $this->repository
+                    ->update($id, $attributes);
     }
 }

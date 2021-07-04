@@ -40,7 +40,7 @@
                                 <button
                                     type="button"
                                     class="btn btn-success"
-                                    @click="createSet(`{{ route('credential.store') }}`, `{{ $project['id'] }}`)"
+                                    @click="editOrCreateSet(`{{ route('credential.store') }}`, `{{ $project['id'] }}`)"
                                 >
                                 {{ __('Add new set') }}
                                 </button>
@@ -58,8 +58,22 @@
                                 <div class="col-auto my-auto">
                                     <button
                                         type="button"
+                                        class="btn btn-success"
+                                        @click="editOrCreateSet(
+                                            `{{route('credential.update',['id'])}}`,
+                                            `{{ $project['id'] }}`,
+                                            credentialSet
+                                        )"
+                                        v-if="`{{ $project['type'] }}` > 1"
+                                    >Edit</button>
+                                    <button
+                                        type="button"
                                         class="btn btn-danger"
-                                        @click="deleteSet(`{{route('credential.delete', ['id'])}}`, credentialSet.id, credentialSet.name)"
+                                        @click="deleteSet(
+                                            `{{route('credential.delete', ['id'])}}`,
+                                            credentialSet.id,
+                                            credentialSet.title
+                                        )"
                                         v-if="`{{ $project['type'] }}` > 1"
                                     >Delete</button>
                                 </div>
@@ -134,7 +148,7 @@
                                         <button
                                             type="button"
                                             class="btn btn-primary"
-                                            @click="storeSet()"
+                                            @click="updateOrStoreSet()"
                                         >
                                             Save
                                         </button>
