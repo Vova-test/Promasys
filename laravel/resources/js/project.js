@@ -16,6 +16,7 @@ new Vue({
             description: '',
         },
         image: null,
+        imageUrl: '',
     },
     methods: {
         async ajax(url, method = 'post', body = {}) {
@@ -82,10 +83,11 @@ new Vue({
                 this.logs.push(`Project was updated!`);
             }
 
-            this.image = '';
+            this.image = null;
+            this.imageUrl = '';
             this.$refs.inputFile.value = null;
 
-            $('#modalProject').modal('hide');
+            this.closeModal();
         },
         selectProject(index) {
             this.selectedProjectIndex = index;
@@ -110,10 +112,22 @@ new Vue({
             $('#modalProject').modal('show');
         },
         getImage(e) {
-            this.image = e.target.files[0];
+            if (e.target.files[0] && e.target.files[0].type == "image/jpeg"){
+                this.image = e.target.files[0];
+                this.imageUrl = URL.createObjectURL(this.image);
+            } else {
+                this.image = null;
+                this.imageUrl = '';
+            }
         },
         getRoute(url, id) {
             return url.replace('id', id);
+        },
+        closeModal() {
+            this.image = null;
+            this.imageUrl = '';
+            this.$refs.inputFile.value = null;
+            $('#modalProject').modal('hide');
         },
     },
     mounted: function () {

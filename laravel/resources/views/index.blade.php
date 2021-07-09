@@ -164,16 +164,17 @@
                     <button
                         type="button"
                         class="close"
-                        data-dismiss="modal"
                         aria-label="Close"
+                        @click="closeModal()"
                     >
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="exampleFormControlInput1">Project Name</label>
+                        <label for="Name">Project Name</label>
                         <input
+                            id="Name"
                             type="email"
                             class="form-control"
                             placeholder="name"
@@ -181,16 +182,18 @@
                         >
                     </div>
                     <div class="form-group">
-                        <label for="exampleFormControlTextarea1">Project Description</label>
+                        <label for="Description">Project Description</label>
                         <textarea
+                            id="Description"
                             class="form-control"
                             rows="3"
                             v-model="project.description"
                         ></textarea>
                     </div>
                     <div class="form-group">
-                        <label for="exampleFormControlFile1">Logo</label>
+                        <label for="Logo">Logo</label>
                         <input
+                            id="Logo"
                             type="file"
                             ref="inputFile"
                             @change="getImage"
@@ -198,10 +201,9 @@
                         >
                     </div>
                     <img
-                        v-if="project.logo"
-                        :src="`/storage/${project.logo}`"
-                        height="200"
-                        width="200"
+                        v-if="imageUrl || project.logo"
+                        :src="imageUrl ? imageUrl : `/storage/${project.logo}`"
+                        class="logo"
                     >
                 </div>
                 <div class="modal-footer">
