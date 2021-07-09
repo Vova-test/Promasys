@@ -54,12 +54,13 @@ Route::group(['middleware' => ['auth']], function () {
     });
 
     Route::prefix('/settings')->group(function () {
-        Route::get('/{project}','ProjectSettingController@index')
+        Route::get('/index/{project}','ProjectSettingController@index')
             ->name('settings');
-        Route::post('/{project}','ProjectSettingController@getSettings');
+        Route::post('/list/{project}','ProjectSettingController@getSettings');
 
-        Route::post('/store','ProjectSettingController@store')
+        Route::post('/store/{project}','ProjectSettingController@store')
             ->name('settings.store');
+        
         Route::delete('/delete/{id}','ProjectSettingController@destroy')
             ->name('settings.delete');
     });

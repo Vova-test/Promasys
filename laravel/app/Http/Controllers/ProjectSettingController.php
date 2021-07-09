@@ -13,7 +13,7 @@ class ProjectSettingController extends Controller
 
     public function index($project)
     {
-        dd($project);
+        return view('settings');
     }
 
     public function getSettings()
