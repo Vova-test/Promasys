@@ -16,4 +16,5 @@ mix.js('resources/js/app.js', 'public/js')
     .styles('resources/sass/layout.css', 'public/css/layout.css')
     .scripts('resources/js/project.js', 'public/js/project.js')
     .scripts('resources/js/card.js', 'public/js/card.js')
+    .scripts('resources/js/setting.js', 'public/js/setting.js')
     .sourceMaps();

@@ -12,7 +12,7 @@ class UserProject extends Model
     use UsesUuid;
 
     const PROJECT_ACCESS_NAME = [
-        '1' => 'general access',
+        '1' => 'read-only',
         '2' => 'extended access',
         '3' => 'You are owner'
     ];
