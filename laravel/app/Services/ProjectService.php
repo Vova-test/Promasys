@@ -26,7 +26,8 @@ class ProjectService extends BaseService
     {
         $userId = Auth::id();
 
-        return $this->project->getProjects($userId);
+        return $this->project
+                    ->getProjects($userId);
     }
 
     public function destroy(string $id)
@@ -40,8 +41,10 @@ class ProjectService extends BaseService
         $project = $this->project->delete($id);
 
         if ($project) {
-            $this->userProject->destroy($id);
-            $this->credentialSet->destroy($id);
+            $this->userProject
+                 ->destroy($id);
+            $this->credentialSet
+                 ->destroy($id);
         }
 
         return $project;
@@ -49,7 +52,8 @@ class ProjectService extends BaseService
 
     public function update(string $id, array $attributes)
     {
-        return $this->project->update($id, $attributes);
+        return $this->project
+                    ->update($id, $attributes);
     }
 
     public function store(array $attributes)
@@ -89,7 +93,7 @@ class ProjectService extends BaseService
     public function getLogoPath(string $id)
     {
         $project = $this->project
-            ->find($id);
+                        ->find($id);
 
         if ($project) {
             return $project->logo;
@@ -99,13 +103,21 @@ class ProjectService extends BaseService
     public function getAccessArray()
     {
         return $this->userProject
-            ->getAccessArray();
+                    ->getAccessArray();
     }
 
     public function getProject(string $projectId)
     {
         $userId = Auth::id();
 
-        return $this->project->getProject($projectId, $userId);
+        return $this->project
+                    ->getProject($projectId, $userId);
     }
+
+    public function getProjectName(string $id)
+    {
+        return $this->project
+                    ->getProjectName($id);
+    }
+
 }

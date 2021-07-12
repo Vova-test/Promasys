@@ -22,7 +22,7 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::redirect('/', '/projects');
 
-    //Route::get('/test','ProjectController@test');
+    Route::get('/test','TestController@test');
 
     Route::prefix('/projects')->group(function () {
         Route::get('/','ProjectController@index')
@@ -56,11 +56,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::prefix('/settings')->group(function () {
         Route::get('/index/{project}','ProjectSettingController@index')
             ->name('settings');
-        Route::post('/list/{project}','ProjectSettingController@getSettings');
 
-        Route::post('/store/{project}','ProjectSettingController@store')
+        Route::post('/list/{project}','ProjectSettingController@getSettings')
+            ->name('settings.list');
+
+        Route::post('/store','ProjectSettingController@store')
             ->name('settings.store');
-        
+
         Route::delete('/delete/{id}','ProjectSettingController@destroy')
             ->name('settings.delete');
     });
