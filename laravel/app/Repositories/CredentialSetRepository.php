@@ -17,10 +17,6 @@ class CredentialSetRepository extends BaseRepository
                     ->where('project_id', $project)
                     ->get();
 
-        if ($credentials) {
-            $credentials = $credentials->toArray();
-        }
-
         return $credentials;
     }
 

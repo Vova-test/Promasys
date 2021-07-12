@@ -18,10 +18,6 @@ class ProjectRepository extends BaseRepository
                                                                       ->with('project:id,logo,name,description')
                                                                       ->get();
 
-        if ($projects) {
-            $projects = $projects->toArray();
-        }
-
         return $projects;
     }
 
@@ -31,8 +27,17 @@ class ProjectRepository extends BaseRepository
                                                                      ->where('project_id', $projectId)
                                                                      ->with('project:id,logo,name,description')
                                                                      ->firstOrFail();
-        $project = $project->toArray();
 
         return $project;
+    }
+
+    public function getProjectName($id)
+    {
+        $project = $this->model
+                        ->findOrFail($id);
+
+        $projectName = $project->name;
+
+        return $projectName;
     }
 }
