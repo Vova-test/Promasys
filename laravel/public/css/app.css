@@ -1,32 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Nunito);body {
-    background: url("http://a.top4top.net/p_397znzmu1.png") center center fixed;
-    background-size: cover;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    -msn-background-size: cover;
-    min-height: 100vh;
-    min-width: 100vw;
-}
-body .overlay {
-    background: rgba(0, 0, 0, 0.1);
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-height: 1em;
-    min-width: 1em;
-    height: 1em;
-    width: 1em;
-}
-html {
-    font-size: 16px;
-}
-@media (min-width: 1200px) {
-    html {
-        font-size: 18px;
-    }
-}
-@charset "UTF-8";
+@import url(https://fonts.googleapis.com/css?family=Nunito);@charset "UTF-8";
 
 /*!
  * Bootstrap v4.6.0 (https://getbootstrap.com/)
@@ -10968,5 +10940,12 @@ a.text-dark:focus {
     color: inherit;
     border-color: #dee2e6;
   }
+}
+
+.logo {
+  max-height: 200px;
+  max-width: 200px;
+  width: auto;
+  height: auto;
 }
 

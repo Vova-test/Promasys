@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 // User Authentication Routes
-Route::get('/mail','TestController@mail');
+//Route::get('/mail','TestController@mail');
 
 Route::get('/login', 'Auth\LoginController@showLoginForm')
     ->name('login');

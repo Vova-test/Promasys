@@ -3,5 +3,6 @@
     "/css/app.css": "/css/app.css",
     "/css/layout.css": "/css/layout.css",
     "/js/project.js": "/js/project.js",
-    "/js/card.js": "/js/card.js"
+    "/js/card.js": "/js/card.js",
+    "/js/setting.js": "/js/setting.js"
 }
