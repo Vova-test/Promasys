@@ -11,12 +11,4 @@ class UserService extends BaseService
     {
         $this->repository = $repository;
     }
-
-    public function getId()
-    {
-    	if (Auth::check()) {
-            return Auth::user()->id; 
-        }
-        return false;
-    }
 }

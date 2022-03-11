@@ -10,6 +10,7 @@ new Vue({
         },
         errors: [],
         logs: [],
+        search: '',
     },
     methods: {
         async ajax(url, method = 'post', body = {}) {
@@ -34,7 +35,6 @@ new Vue({
 
                 this.errors.push(`Error, status: ${response.status}`);
             } catch (error) {
-                console.log(error);
                 this.errors.push(`Error, ${error}`);
             }
         },
@@ -100,5 +100,16 @@ new Vue({
     },
     mounted: function () {
         this.getCredentialSets();
+    },
+    computed: {
+        filteredCredentialSets() {
+            if (this.credentialSets.length == 0) {
+                return [];
+            }
+            return this.credentialSets.filter(credentialSet => {
+                return credentialSet.title.toLowerCase().indexOf(this.search.toLowerCase()) > -1
+                    || credentialSet.credentials.toLowerCase().indexOf(this.search.toLowerCase()) > -1;
+            });
+        }
     },
 })

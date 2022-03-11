@@ -15,15 +15,17 @@
                         <div class="col my-auto">
                             <h3>{{ $project['name'] }}</h3>
                         </div>
-                        <div class="col-auto ml-auto my-auto">
-                            <a
-                                type="button"
-                                class="btn btn-primary"
-                                href="{{ route('settings', [$project['id']]) }}"
-                            >
-                            {{ __('Settings') }}
-                            </a>
-                        </div>
+                        @if($project['type'] == 3)
+                            <div class="col-auto ml-auto my-auto">
+                                <a
+                                    type="button"
+                                    class="btn btn-primary"
+                                    href="{{ route('settings', [$project['id']]) }}"
+                                >
+                                {{ __('Settings') }}
+                                </a>
+                            </div>
+                        @endif
                     </div>
                     <h6>
                         {{ $project['description'] }}
@@ -32,6 +34,23 @@
                         id="card-app"
                         data-url="{{ route('credentials', [$project['id']]) }}"
                     >
+                        <div class="row my-4">
+                            <div class="col-md-4 ml-auto mb-1">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"> <i class="fa fa-search"></i> </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            class="form-control"
+                                            id="search"
+                                            v-model="search"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="row my-4">
                             <div class="col my-auto">
                                 <h6><strong>Credentials: @{{credentialSets.length}} sets</strong></h6>
@@ -47,7 +66,7 @@
                             </div>
                         </div>
                         <div
-                            v-for="(credentialSet, index) of credentialSets"
+                            v-for="(credentialSet, index) of filteredCredentialSets"
                             class="mb-3"
                         >
                             <h6>@{{index + 1}}. @{{credentialSet.title}}</h6>

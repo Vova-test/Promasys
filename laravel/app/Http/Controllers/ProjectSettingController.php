@@ -4,14 +4,23 @@ namespace App\Http\Controllers;
 
 use App\Services\ProjectService;
 use App\Services\UserProjectService;
+use App\Services\UserService;
+use App\Services\MailService;
+use App\Services\User;
 use Illuminate\Http\Request;
 
 class ProjectSettingController extends Controller
 {
-    public function __construct(ProjectService $projectService, UserProjectService $userProjectService)
-    {
+    public function __construct(
+        ProjectService $projectService,
+        UserProjectService $userProjectService,
+        UserService $userService,
+        MailService $mailService
+    ) {
         $this->projectService = $projectService;
         $this->userProjectService = $userProjectService;
+        $this->userService = $userService;
+        $this->mailService = $mailService;
     }
 
     public function index($id)
@@ -35,22 +44,27 @@ class ProjectSettingController extends Controller
         $settings['accessArray'] = $this->projectService
                                         ->getAccessArray();
 
-        $userSettings = 'userSettings';
-        $users = 'users';
-
         return response()->json($settings);
     }
 
-    public function store(Request $request)
+    public function set(Request $request)
     {
-        //dd($request->except('_token'));
         $data = [
             'project_id' => $request->projectId,
             'user_id' => $request->userId,
             'type' => $request->type
         ];
 
-        $stored = $this->userProjectService->create($data);
+        $stored = $this->userProjectService
+                       ->create($data);
+
+        $user = $this->userService
+                     ->find($request->userId);
+        $project = $this->projectService
+                        ->find($request->projectId);
+
+        $this->mailService
+             ->send($user->email, 'mail.setting', ['projectName' => $project->name]);
 
         return response()->json(['stored' => $stored]);
     }

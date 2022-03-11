@@ -74,7 +74,7 @@
                         <div class="d-flex justify-content-center mt-2 mt-sm-0">
                             <button
                                 class="btn btn-secondary"
-                                @click="setSetting(`{{ route('settings.store') }}`,`{{ $project['id'] }}`)"
+                                @click="setSetting(`{{ route('settings.set') }}`,`{{ $project['id'] }}`)"
                             >
                                 {{ __('Grant') }}
                             </button>

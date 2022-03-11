@@ -10,4 +10,11 @@ class UserRepository extends BaseRepository
     {
         $this->model = $model;
     }
+
+    public function update($id, array $attributes)
+    {
+        return $this->model
+            ->find($id)
+            ->update($attributes);
+    }
 }

@@ -7,6 +7,9 @@ use App\Services\EncryptService;
 use Illuminate\Console\Command;
 use Hash;
 use Validator;
+use Illuminate\Support\Str;
+use App\Services\MailService;
+use Illuminate\Support\Facades\URL;
 
 class AssignUser extends Command
 {
@@ -61,6 +64,9 @@ class AssignUser extends Command
             'credential_key' => EncryptService::encryptPassword($details['password']),
         ]);
 
+        $mail = new MailService();
+        $mail->send($details['email'], 'mail.registration', $details);
+
         $this->display($newUser);
     }
 
@@ -73,8 +79,7 @@ class AssignUser extends Command
     {
         $details['name'] = $this->ask('Name');
         $details['email'] = $this->ask('Email');
-        $details['password'] = $this->secret('Password');
-        $details['password_confirmation'] = $this->secret('Password confirmation');
+        $details['password'] = Str::random(16);
 
         $errors = $this->isValid($details);
 
@@ -133,7 +138,6 @@ class AssignUser extends Command
         $validator = Validator::make($user, [
             'name' => 'required|unique:users',
             'email' => 'required|email|unique:users',
-            'password' => 'required|confirmed|size:16'
         ]);
 
         return $validator->errors();

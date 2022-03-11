@@ -4,6 +4,8 @@ namespace App\Repositories;
 
 use App\Models\UserProject;
 use App\Models\User;
+use App\Services\EncryptService;
+use Hash;
 
 class UserProjectRepository extends BaseRepository
 {
@@ -56,5 +58,14 @@ class UserProjectRepository extends BaseRepository
                              ->get();
 
         return compact('users', 'userSettings');
+    }
+
+    public function deleteUserSettings(string $userId)
+    {
+        $query = $this->model->select('project_id')->where('user_id', $userId)->where('type', 3)->get();//dd($query);
+
+        $delete = $this->model->whereIn('project_id', $query)->where('type', '<', 3)->delete();
+
+        return  $delete;
     }
 }

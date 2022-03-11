@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 // User Authentication Routes
+Route::get('/mail','TestController@mail');
+
 Route::get('/login', 'Auth\LoginController@showLoginForm')
     ->name('login');
 Route::post('/login', 'Auth\LoginController@login');
@@ -21,8 +23,6 @@ Route::post('/login', 'Auth\LoginController@login');
 Route::group(['middleware' => ['auth']], function () {
 
     Route::redirect('/', '/projects');
-
-    Route::get('/test','TestController@test');
 
     Route::prefix('/projects')->group(function () {
         Route::get('/','ProjectController@index')
@@ -60,8 +60,8 @@ Route::group(['middleware' => ['auth']], function () {
         Route::post('/list/{project}','ProjectSettingController@getSettings')
             ->name('settings.list');
 
-        Route::post('/store','ProjectSettingController@store')
-            ->name('settings.store');
+        Route::post('/set','ProjectSettingController@set')
+            ->name('settings.set');
 
         Route::delete('/delete/{id}','ProjectSettingController@destroy')
             ->name('settings.delete');
@@ -70,6 +70,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::post('logout', 'Auth\LoginController@logout')
         ->name('logout');
 
-    Route::post('panic', 'PanicController@index')
+    Route::post('panic', 'Auth\LoginController@panic')
         ->name('panic');
 });

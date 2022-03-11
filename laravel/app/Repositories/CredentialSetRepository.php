@@ -14,8 +14,8 @@ class CredentialSetRepository extends BaseRepository
     public function getCredentials(string $project)
     {
         $credentials = $this->model
-                    ->where('project_id', $project)
-                    ->get();
+                            ->where('project_id', $project)
+                            ->get();
 
         return $credentials;
     }
@@ -32,5 +32,28 @@ class CredentialSetRepository extends BaseRepository
         return $this->model
                     ->find($id)
                     ->update($attributes);
+    }
+
+    public function getUserCredentials(string $userId)
+    {
+        return $this->model
+                    ->where('user_id', $userId)
+                    ->get()
+                    ->toArray();
+    }
+
+    public function updateUserCredentials($userId)
+    {
+        $credentials = $this->getUserCredentials($userId);
+
+        foreach ($credentials as $credential) {
+            $this->model
+                 ->find($credential['id'])
+                 ->update([
+                     'credentials' => $credential['credentials']
+                 ]);
+        }
+
+        return true;
     }
 }
